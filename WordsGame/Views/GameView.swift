@@ -14,6 +14,7 @@ struct GameView: View {
     @State private var confirmPresent = false
     @State private var isAlertPresent = false
     @State  var alertText = ""
+    @State private var listOpacity = 0.0
     
     @Environment(\.dismiss) var dismiss
     
@@ -36,6 +37,7 @@ struct GameView: View {
                 }
                 Spacer()
             }
+            
             
             Text(viewModel.word)
                 .font(.custom("AvenirNext-Bold", size: 36))
@@ -74,16 +76,16 @@ struct GameView: View {
                         radius: 15, x: 0, y: 0)
             }
             
-            
-            
             WordTextField(word: $word, placeHolder: "Вашe слово")
                 .padding(.horizontal)
+                .shadow(color: .black, radius: 5)
             
             Button {
                 var score = 0
                 
                 do {
                     try score = viewModel.check(word: word)
+                    self.listOpacity  = 1.0
                 } catch WordError.beforeWord {
                     alertText = "Прояви фантазию, придумай новое слово"
                     isAlertPresent.toggle()
@@ -114,22 +116,25 @@ struct GameView: View {
                     .cornerRadius(16)
                     .font(.custom("AvenirNext-Bold", size: 26))
                     .padding(.horizontal)
+                
             }
-            
-            List {
-                ForEach(0 ..< self.viewModel.words.count, id: \.description) { item in
-                    WordCell(word: self.viewModel.words[item])
-                        .listRowBackground(Color("Fon"))
-                        .background(item % 2 == 0 ? Color("FirstPlayer") : Color("SecondPlayer"))
-                        .listRowInsets(EdgeInsets())
-                        .cornerRadius(16)
+            if !viewModel.words.isEmpty {
+                List {
+                    
+                    ForEach(0 ..< self.viewModel.words.count, id: \.description) { item in
+                        WordCell(word: self.viewModel.words[item])
+                            .listRowBackground(Color("Fon"))
+                            .background(item % 2 == 0 ? Color("FirstPlayer") : Color("SecondPlayer"))
+                            .listRowInsets(EdgeInsets())
+                            .cornerRadius(16)
+                    }
                 }
+                .padding()
+                .listStyle(.plain)
             }
-            .cornerRadius(16)
-            .padding()
-            .listStyle(.plain)
-            
+          Spacer()
         }.background(Image("Fon"))
+        
             .confirmationDialog("Вы уверены, что хотите завершить игру?",
                                 isPresented: $confirmPresent,
                                 titleVisibility: .visible) {
@@ -148,9 +153,15 @@ struct GameView: View {
                 Text("ok")
             }
         
+                    .onTapGesture {
+                        UIApplication.shared.sendAction(
+                            #selector(UIResponder.resignFirstResponder),
+                            to: nil,
+                            from: nil,
+                            for: nil)
+                        
+                    }
     }
-    
-    
 }
 
 struct GameView_Previews: PreviewProvider {

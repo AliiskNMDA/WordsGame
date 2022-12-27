@@ -18,6 +18,7 @@ struct TitleText: View {
             .background(Color("FirstPlayer"))
             .foregroundColor(.white)
             .cornerRadius(16)
+          
     }
 }
 

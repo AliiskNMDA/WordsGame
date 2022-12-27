@@ -33,8 +33,7 @@ struct StartView: View {
                 .cornerRadius(12)
                 .padding(.horizontal, 20)
                 .shadow(color: .black, radius: 5)
-            
-            
+        
             Button {
                 
                 if bigWord.count > 7 {
@@ -43,7 +42,7 @@ struct StartView: View {
                     self.isAlertPresent.toggle()
                 }
                 
-                
+               
             } label: {
                 Text("Srart ")
                 
@@ -56,7 +55,10 @@ struct StartView: View {
                     .padding(.top)
             }
             
+        }    .onTapGesture {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
+        
         .background(Image("Fon"))
         .alert("Длинное слово слишком короткое", isPresented: $isAlertPresent, actions: {
             Text("OK")

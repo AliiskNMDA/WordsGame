@@ -27,6 +27,7 @@ struct WordCell: View {
             
             
         }
+//        .listStyle(PlainListStyle())
 
     }
 }

@@ -14,9 +14,9 @@ struct WordTextField: View {
         TextField(placeHolder, text: word)
             .font(.title2)
             .padding()
-            .background(.green)
+            .background(.white)
             .cornerRadius(12)
-        
+
     }
 }
 
